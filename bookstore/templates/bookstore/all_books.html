@@ -8,7 +8,6 @@
 </head>
 <body>
 {% include 'header.html' %}
-{% include 'body.html' %}
 {% for book in books %}
 <div class="bg-light p-5 rounded">
     <h1>{{book.title|slice:50}}</h1>

@@ -75,7 +75,8 @@ def list_books(request):
 def book_detail(request, index):
     try:
         book = books[index - 1]
-        author = authors[index - 1]
+        author_id = book['author_id']
+        author = authors[author_id - 1]
         return render(request, 'bookstore/book_detail.html', context={'book': book, 'author': author})
     except IndexError:
         return HttpResponseNotFound(f"Сторінка з {index = } не знайдена")
