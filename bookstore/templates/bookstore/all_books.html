@@ -8,6 +8,15 @@
 </head>
 <body>
 {% include 'header.html' %}
+
+<div>
+      <form class="mt-2">
+        <input type="text" placeholder="Search" name="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+</div>
+<a class="btn btn-lg btn-primary" href="{% url 'books_create'%}" role="button">Додати книгу</a>
+
 {% for book in books %}
 <div class="bg-light p-5 rounded">
     <h1>{{book.title|slice:50}}</h1>
