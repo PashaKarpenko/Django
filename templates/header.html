@@ -1,5 +1,11 @@
 <header class="bd-header bg-dark py-3 d-flex align-items-stretch border-bottom border-dark">
     <div class="container-fluid d-flex align-items-center">
     <h1 class="d-flex align-items-center fs-4 text-white mb-0">BOOKSTORE</h1>
+    {% if user.is_authenticated %}
+        <a class="btn btn-lg btn-primary" href="{% url 'logout' %}">Вийти ({{user.username}})</a>
+    {% else %}
+        <a class="btn btn-lg btn-primary" href="{% url 'registration'%}" role="button">Реєстрація</a>
+        <a class="btn btn-lg btn-primary" href="{% url 'login'%}" role="button">Вхід</a>
+    {% endif %}
     </div>
 </header>

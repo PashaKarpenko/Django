@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404, get_list_or_404, redirect
-from .models import Books, Authors
-from .forms import CreateBookForm
+from .models import Books, Authors, Review
+from .forms import CreateBookForm, ReviewForm
+from django.views.generic.base import View
+
 
 def list_books(request):
     books = Books.objects.all()
@@ -11,14 +13,26 @@ def list_books(request):
     return render(request, 'bookstore/all_books.html', context=context)
 
 
-def book_detail(request, index):
-    book = get_object_or_404(Books, id=index)
-    author_id = book.author_id
-    author = get_object_or_404(Authors, id=author_id)
-    context = {'book': book, 'author': author}
-    print(book)
-    return render(request, 'bookstore/book_detail.html', context=context)
+class BookDetailView(View):
+    def post(self, request, pk):
+        book = get_object_or_404(Books, id=pk)
+        author = get_object_or_404(Authors, id=book.author_id)
+        reviews = Review.objects.filter(book_id=book.id).all()
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.book_id = book.id
+            review.user = request.user
+            review.save()
+        context = {'book': book, 'author': author, 'reviews': reviews, 'create_review_form': ReviewForm}
+        return render(request, 'bookstore/book_detail.html', context=context)
 
+    def get(self, request, pk):
+        book = get_object_or_404(Books, id=pk)
+        author = get_object_or_404(Authors, id=book.author_id)
+        reviews = Review.objects.filter(book_id=book.id).all()
+        context = {'book': book, 'author': author, 'reviews': reviews, 'create_review_form': ReviewForm}
+        return render(request, 'bookstore/book_detail.html', context=context)
 
 
 def author_details(request, index):
@@ -39,11 +53,8 @@ def books_create(request):
     books = Books.objects.all()
     if request.method == 'POST':
         form = CreateBookForm(request.POST)
-        print(form)
         if form.is_valid():
             form.save()
         return redirect('http://127.0.0.1:8000/books/')
     context = {'books': books, 'create_books_form': CreateBookForm}
     return render(request, 'bookstore/books_create.html', context=context)
-
-
