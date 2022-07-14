@@ -55,6 +55,6 @@ def books_create(request):
         form = CreateBookForm(request.POST)
         if form.is_valid():
             form.save()
-        return redirect('http://127.0.0.1:8000/books/')
+        return redirect('all_books')
     context = {'books': books, 'create_books_form': CreateBookForm}
     return render(request, 'bookstore/books_create.html', context=context)
