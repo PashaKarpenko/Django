@@ -2,7 +2,7 @@ from .forms import UserCreateForm
 from django.urls import reverse_lazy, reverse
 from django.views.generic import FormView
 from django.views import View
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import redirect
 
@@ -14,6 +14,10 @@ class RegisterFormView(FormView):
 
     def form_valid(self, form):
         form.save()
+        username = self.request.POST['username']
+        password = self.request.POST['password1']
+        user = authenticate(username=username, password=password)
+        login(self.request, user)
         return super().form_valid(form)
 
 
