@@ -8,3 +8,4 @@ urlpatterns = [
     path('books/author/<int:index>/', books_of_author, name='books_of_author'),
     path('books/create/', books_create, name='books_create')
 ]
+

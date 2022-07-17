@@ -58,3 +58,4 @@ def books_create(request):
         return redirect('all_books')
     context = {'books': books, 'create_books_form': CreateBookForm}
     return render(request, 'bookstore/books_create.html', context=context)
+
